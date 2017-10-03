@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const validator = require('validator');
+const validation = require('validator');
 const jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema({
@@ -11,9 +11,9 @@ var UserSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     validate: {
-      validator: validator.isEmail,
-      message: '{value} is not a valid email!',
-      isAsynch: false
+      isAsync: false,
+      validator: validation.isEmail,
+      message: '{value} is not a valid email!'
     }
   },
   password: {
@@ -46,6 +46,22 @@ UserSchema.methods.generateAuthToken = function() {
   user.tokens.push({access, token});
   return user.save().then(()=>{
     return(token);
+  });
+};
+
+UserSchema.statics.findByToken = function (token){
+  var User = this;
+  var decoded;
+  try{
+    decoded = jwt.verify(token, 'abc123');
+  } catch(e){
+    console.log(e.toString());
+    return Promise.reject();
+  }
+  return User.findOne({
+    '_id': decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
   });
 };
 
