@@ -26,23 +26,28 @@ const users = [{
 const todos = [{ _id: new ObjectID(),
                 text: 'First test todo',
                 completed: false,
-                completedAt: 3},
+                completedAt: 3,
+                _creator: user1Id},
               { _id: new ObjectID(),
                 text: 'Second test todo',
                 completed: true,
-                completedAt: 3},
+                completedAt: 3,
+                _creator: user2Id},
               { _id: new ObjectID(),
                 text: 'Third test todo',
                 completed: true,
-                completedAt: 3},
+                completedAt: 3,
+                _creator: user1Id},
               { _id: new ObjectID(),
                   text: 'Forth test todo',
                   complete: false,
-                  completedAt: 3},
+                  completedAt: 3,
+                  _creator: user2Id},
               { _id: new ObjectID(),
                 text: 'Fifth test todo',
                 completed: false,
-                completedAt: 3}];
+                completedAt: 3,
+                _creator: user1Id}];
 
 const populateTodos = (done) => {
   Todo.remove({}).then(()=>{
